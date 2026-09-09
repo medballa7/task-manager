@@ -27,3 +27,9 @@ jobs:
 
       - name: Build and test
         run: ./mvnw --batch-mode verify
+
+      - name: Upload JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: task-manager-jar
+          path: target/*.jar
