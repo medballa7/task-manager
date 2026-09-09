@@ -11,9 +11,5 @@ class TaskManagerApplicationTests {
 	void contextLoads() {
 	}
 
-	@Test
-	void ciTestFailure() {
-    assertEquals(1, 2);
-	}	
 
 }
