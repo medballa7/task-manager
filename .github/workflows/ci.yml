@@ -45,5 +45,7 @@ jobs:
         with:
           name: task-manager-jar
 
-      - name: Show downloaded JAR
-        run: ls -lh
+      - name: Start application 
+        run: |
+          java -jar task-manager-0.0.1-SNAPSHOT.jar &
+          sleep 10
