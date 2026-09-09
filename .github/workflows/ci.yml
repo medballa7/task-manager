@@ -46,11 +46,11 @@ jobs:
           name: task-manager-jar
 
       - name: Start application
-          run: |
-            java -jar task-manager-0.0.1-SNAPSHOT.jar > application.log 2>&1 &
-            echo $! > app.pid
-            sleep 10
-            cat application.log
+        run: |
+          java -jar task-manager-0.0.1-SNAPSHOT.jar > application.log 2>&1 &
+          echo $! > app.pid
+          sleep 10
+          cat application.log
 
       - name: smoke test
         run: |
