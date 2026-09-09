@@ -41,10 +41,10 @@ jobs:
     steps:
 
        - name: Setup Java
-      uses: actions/setup-java@v4
-      with:
-        java-version: "21"
-        distribution: "temurin"
+         uses: actions/setup-java@v4
+         with:
+          java-version: "21"
+          distribution: "temurin"
 
 
       - name: Download JAR
