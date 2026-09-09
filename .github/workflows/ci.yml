@@ -33,3 +33,17 @@ jobs:
         with:
           name: task-manager-jar
           path: target/*.jar
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Download JAR
+        uses: actions/download-artifact@v4
+        with:
+          name: task-manager-jar
+
+      - name: Show downloaded JAR
+        run: ls -lh
