@@ -68,10 +68,10 @@ jobs:
           cat application.log
 
 
-      - name: Smoke test
+      - name: Wait for application to be ready
         run: |
           for i in {1..30}; do
-            if curl --fail http://localhost:8080; then
+            if curl --fail http://localhost:8080/health; then
               echo "Application is healthy"
               exit 0
             fi
