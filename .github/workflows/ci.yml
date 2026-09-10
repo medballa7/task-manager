@@ -56,15 +56,10 @@ jobs:
 
       - name: Start application
         run: |
-          java -jar task-manager-0.0.1-SNAPSHOT.jar \
-            --spring.datasource.url=jdbc:h2:mem:testdb \
-            --spring.datasource.driverClassName=org.h2.Driver \
-            --spring.datasource.username=sa \
-            --spring.datasource.password= \
-            --spring.jpa.database-platform=org.hibernate.dialect.H2Dialect \
-            --management.endpoints.web.exposure.include=health \
-            > application.log 2>&1 &
-          sleep 30
+          java -jar task-manager-0.0.1-SNAPSHOT.jar > application.log 2>&1 &
+          echo $! > application.pid
+          sleep 5
+
           echo "===== APPLICATION LOG ====="
           cat application.log
 
@@ -77,6 +72,7 @@ jobs:
             fi
             sleep 1
           done
+
           echo "Application failed to start"
           cat application.log
           exit 1
