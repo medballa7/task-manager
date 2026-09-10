@@ -62,16 +62,16 @@ jobs:
             --spring.datasource.username=sa \
             --spring.datasource.password= \
             --spring.jpa.database-platform=org.hibernate.dialect.H2Dialect \
+            --management.endpoints.web.exposure.include=health \
             > application.log 2>&1 &
           sleep 30
           echo "===== APPLICATION LOG ====="
           cat application.log
 
-
       - name: Wait for application to be ready
         run: |
           for i in {1..30}; do
-            if curl --fail http://localhost:8080/health; then
+            if curl --fail http://localhost:8080/actuator/health; then
               echo "Application is healthy"
               exit 0
             fi
