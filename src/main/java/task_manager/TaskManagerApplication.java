@@ -12,4 +12,4 @@ public class TaskManagerApplication {
 
 }
 
-// CI/CD learning projecttt
+// CI/CD learning project
