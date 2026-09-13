@@ -1,0 +1,88 @@
+name: Java CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+  push:
+    branches:
+      - main
+
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps: 
+
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
+
+      - name: Grant execute permission for mvnw
+        run: chmod +x mvnw
+
+      - name: Build and test
+        run: ./mvnw --batch-mode verify
+
+      - name: Upload JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: task-manager-jar
+          path: target/*.jar
+
+  deploy:
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
+
+      - name: Download JAR
+        uses: actions/download-artifact@v4
+        with:
+          name: task-manager-jar
+
+      - name: Show downloaded JAR
+        run: ls -lh
+
+      - name: Start application
+        run: |
+          java -jar task-manager-0.0.1-SNAPSHOT.jar > application.log 2>&1 &
+          echo $! > application.pid
+          sleep 5
+
+          echo "===== APPLICATION LOG ====="
+          cat application.log
+
+      - name: Wait for application to be ready
+        run: |
+          for i in {1..30}; do
+            echo "Checking application... attempt $i"
+
+            if curl --fail --silent http://localhost:8080/actuator/health; then
+              echo ""
+              echo "Application is healthy"
+              exit 0
+            fi
+
+            sleep 1
+          done
+
+          echo "Application failed to start"
+          echo "===== APPLICATION LOG ====="
+          cat application.log
+          exit 1

@@ -11,3 +11,5 @@ public class TaskManagerApplication {
 	}
 
 }
+
+// CI/CD learning project
